@@ -4,7 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 
 // Python backend URL
-const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || "http://localhost:8000";
+const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || "https://onebox-email-aggregator-backend.onrender.com";
 
 export function createServer() {
   const app = express();
