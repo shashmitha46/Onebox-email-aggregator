@@ -25,3 +25,11 @@ dist-ssr
 
 .config/
 !.env
+
+venv/
+node_modules/
+.env
+.python-version
+__pycache__/
+dist/
+build/
