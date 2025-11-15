@@ -76,15 +76,26 @@ className={cn(
 - `GET /api/ping` - Simple ping api
 - `GET /api/demo` - Demo endpoint  
 
-### Shared Types
-Import consistent types in both client and server:
-```typescript
-import { DemoResponse } from '@shared/api';
-```
+### Multi-Account IMAP Support
 
-Path aliases:
-- `@shared/*` - Shared folder
-- `@/*` - Client folder
+- Connect and sync multiple email accounts.
+- Persistent IMAP connections.
+- Real-time updates using IDLE (no cron jobs).
+
+### Real-Time Email Synchronization
+- Fetches last 30 days of emails.
+- Detects new incoming messages instantly.
+- Background IMAP listeners per account.
+
+### Searchable Storage (Elasticsearch)
+- Each email is indexed in Elasticsearch.
+- Fast full-text search on subject, body, and metadata.
+
+### REST API (FastAPI)
+- Email listing APIs
+- Search APIs
+- Account registration APIs
+- Status, healthcheck & debug endpoints
 
 ## Development Commands
 
@@ -96,62 +107,21 @@ pnpm typecheck  # TypeScript validation
 pnpm test          # Run Vitest tests
 ```
 
-## Adding Features
+## Environment Variables
 
-### Add new colors to the theme
-
-Open `client/global.css` and `tailwind.config.ts` and add new tailwind colors.
-
-### New API Route
-1. **Optional**: Create a shared interface in `shared/api.ts`:
-```typescript
-export interface MyRouteResponse {
-  message: string;
-  // Add other response properties here
-}
+Create a file:
+backend/.env
 ```
+IMAP_HOST=imap.gmail.com
+IMAP_USER=your_email@example.com
+IMAP_PASSWORD=yourpassword
 
-2. Create a new route handler in `server/routes/my-route.ts`:
-```typescript
-import { RequestHandler } from "express";
-import { MyRouteResponse } from "@shared/api"; // Optional: for type safety
+MONGO_URI=mongodb://localhost:27017
+MONGO_DB=emaildb
 
-export const handleMyRoute: RequestHandler = (req, res) => {
-  const response: MyRouteResponse = {
-    message: 'Hello from my endpoint!'
-  };
-  res.json(response);
-};
+ELASTICSEARCH_URL=http://localhost:9200
+GOOGLE_API_KEY=your_api_key_if_used
 ```
-
-3. Register the route in `server/index.ts`:
-```typescript
-import { handleMyRoute } from "./routes/my-route";
-
-// Add to the createServer function:
-app.get("/api/my-endpoint", handleMyRoute);
-```
-
-4. Use in React components with type safety:
-```typescript
-import { MyRouteResponse } from '@shared/api'; // Optional: for type safety
-
-const response = await fetch('/api/my-endpoint');
-const data: MyRouteResponse = await response.json();
-```
-
-### New Page Route
-1. Create component in `client/pages/MyPage.tsx`
-2. Add route in `client/App.tsx`:
-```typescript
-<Route path="/my-page" element={<MyPage />} />
-```
-
-## Production Deployment
-
-- **Standard**: `pnpm build`
-- **Binary**: Self-contained executables (Linux, macOS, Windows)
-- **Cloud Deployment**: Use either Netlify or Vercel via their MCP integrations for easy deployment. Both providers work well with this starter template.
 
 ## Architecture Notes
 
